@@ -69,8 +69,9 @@ namespace regex
     cregex const class_header =
         keep
         (
+            keep(~after(as_xpr("enum "))) >>
             keep( _b >> ( as_xpr( "class" ) | "struct" ) ) >>
-            keep( +ws >> +_w                             ) >>
+            keep( +ws >> +_w ) >>
             keep( *keep( ~(set= '(',')','{',';','=') | parens | ignored ) ) >>
             '{'
         );
@@ -174,7 +175,7 @@ void preprocess( char const * const p_filename, std::string & buffer )
     std::cout << "preprocess.cpp: 4\n";
     regex::match_results<char const *> search_results;
     using namespace regex;
-    cregex const main_regex( (s1= ignored) | (s2=keep( class_header | function_header )) | (s3='{') | (s4='}') );
+    cregex const main_regex( (s1= ignored) | (s2=keep( class_header /*| function_header*/ )) | (s3='{') | (s4='}') );
 
     std::cout << "preprocess.cpp: 5\n";
     BOOST_ASSERT( buffer.empty() );

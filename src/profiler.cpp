@@ -114,7 +114,7 @@ int main( int const argc, char const * const argv[] )
 
         static char const final_compiler_output[] = "template_profiler.final_compiler_output.txt";
         {
-            std::string const full_command_line( std::string( compiler_binary ) + " " + prepared_file_to_compile + " @" + compiler_response_file + " > " + final_compiler_output );
+            std::string const full_command_line( std::string( compiler_binary ) + " " + prepared_file_to_compile + " @" + compiler_response_file + " > " + final_compiler_output + " 2>&1" );
             std::cout << "FULL COMMAND LINE2: " << full_command_line << "\n";
             int const result( /*std*/::system( full_command_line.c_str() ) );
             if ( result != 0 )
