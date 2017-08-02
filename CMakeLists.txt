@@ -1,3 +1,5 @@
+cmake_minimum_required(VERSION 3.6)
+
 ################################################################################
 #         Copyright 2003 & onward LASMEA UMR 6602 CNRS/Univ. Clermont II
 #         Copyright 2009 & onward LRI    UMR 8623 CNRS/Univ Paris Sud XI
@@ -14,12 +16,11 @@
 ################################################################################
 # Add the target to build profiler
 ################################################################################
-find_path( PROFILER_PATH profiler.cmake ${CMAKE_MODULE_PATH} )
+set(PROFILER_PATH .)
 
 include_directories( ${Boost_INCLUDE_DIRS} )
 add_executable(
     template.profiler
-    EXCLUDE_FROM_ALL
     ${PROFILER_PATH}/src/filter.cpp
     ${PROFILER_PATH}/src/filter.hpp
     ${PROFILER_PATH}/src/postprocess.cpp
@@ -28,6 +29,8 @@ add_executable(
     ${PROFILER_PATH}/src/preprocess.hpp
     ${PROFILER_PATH}/src/profiler.cpp
 )
+include_directories(/home/un1or/projects/v4scene/v4sdk/boost/boost)
+set (CMAKE_CXX_FLAGS "--std=c++11 ${CMAKE_CXX_FLAGS}")
 set_property( TARGET template.profiler PROPERTY RUNTIME_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/tools )
 set_property( TARGET template.profiler PROPERTY EXCLUDE_FROM_DEFAULT_BUILD 1 )
 if ( MSVC )

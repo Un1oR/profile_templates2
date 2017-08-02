@@ -40,7 +40,8 @@
 #include <cstdlib>
 #include <cstring>
 #include <exception>
-#include "process.h"
+#include <iostream>
+//#include "process.h"
 #include <string>
 //------------------------------------------------------------------------------
 namespace boost
@@ -77,6 +78,7 @@ int main( int const argc, char const * const argv[] )
 
         {
             std::string const full_command_line( std::string( compiler_binary ) + " " + source_to_profile + " @" + compiler_response_file + " -E > " + compiler_preprocessed_file );
+            std::cout << "FULL COMMAND LINE: " << full_command_line << '\n';
             int const result( /*std*/::system( full_command_line.c_str() ) );
             if ( result != 0 )
             {
@@ -89,8 +91,11 @@ int main( int const argc, char const * const argv[] )
         {
             std::string preprocessed_input;
             std::string filtered_input    ;
+            std::cout << "1\n";
             preprocess     ( compiler_preprocessed_file, preprocessed_input );
+            std::cout << "2\n";
             copy_call_graph( preprocessed_input        , filtered_input     );
+            std::cout << "3\n";
 
             int const file_id( /*std*/::open( prepared_file_to_compile, O_CREAT | O_TRUNC | O_WRONLY, S_IREAD | S_IWRITE ) );
             if ( file_id < 0 )
@@ -110,6 +115,7 @@ int main( int const argc, char const * const argv[] )
         static char const final_compiler_output[] = "template_profiler.final_compiler_output.txt";
         {
             std::string const full_command_line( std::string( compiler_binary ) + " " + prepared_file_to_compile + " @" + compiler_response_file + " > " + final_compiler_output );
+            std::cout << "FULL COMMAND LINE2: " << full_command_line << "\n";
             int const result( /*std*/::system( full_command_line.c_str() ) );
             if ( result != 0 )
             {

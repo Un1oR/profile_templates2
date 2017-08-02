@@ -31,6 +31,7 @@
 #include <exception>
 #include <fstream>
 #include <iomanip>
+#include <iostream>
 #include <iterator>
 #include <map>
 #include <set>

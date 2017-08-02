@@ -29,6 +29,7 @@
 #include "boost/range/iterator_range_core.hpp"
 #include "boost/xpressive/xpressive.hpp"
 
+#include <iostream>
 #include <iterator>
 //------------------------------------------------------------------------------
 namespace boost
@@ -149,6 +150,7 @@ void preprocess( char const * const p_filename, std::string & buffer )
 {
     using namespace boost;
 
+    std::cout << "preprocess.cpp: 1\n";
     interprocess::mapped_region const input_file_view
     (
         interprocess::file_mapping
@@ -159,25 +161,30 @@ void preprocess( char const * const p_filename, std::string & buffer )
         interprocess::read_only
     );
 
+    std::cout << "preprocess.cpp: 2\n";
     buffer.reserve( input_file_view.get_size() );
 
+    std::cout << "preprocess.cpp: 3\n";
     iterator_range<char const *> input
     (
         static_cast<char const *>( input_file_view.get_address() ),
         static_cast<char const *>( input_file_view.get_address() ) + input_file_view.get_size()
     );
 
+    std::cout << "preprocess.cpp: 4\n";
     regex::match_results<char const *> search_results;
     using namespace regex;
     cregex const main_regex( (s1= ignored) | (s2=keep( class_header | function_header )) | (s3='{') | (s4='}') );
 
+    std::cout << "preprocess.cpp: 5\n";
     BOOST_ASSERT( buffer.empty() );
-    buffer = "#include <template_profiler.hpp>\n";
+    buffer = "#include \"template_profiler.hpp\"\n";
 
     // Implementation note:
     //   The whole file has to be searched at once in order to handle class/
     // function definitions over several lines.
     //                                    (01.08.2011.) (Domagoj Saric)
+    std::cout << "preprocess.cpp: 6\n";
     regex_replace
     (
         std::back_insert_iterator<std::string>( buffer ),
@@ -186,6 +193,7 @@ void preprocess( char const * const p_filename, std::string & buffer )
         main_regex,
         formatter()
     );
+    std::cout << "preprocess.cpp: 7\n";
 }
 
 //------------------------------------------------------------------------------
